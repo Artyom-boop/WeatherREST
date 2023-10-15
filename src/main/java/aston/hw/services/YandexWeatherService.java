@@ -1,6 +1,7 @@
 package aston.hw.services;
 
-import aston.hw.model.YandexWeatherResponse;
+import aston.hw.Utils.PropertiesLoader;
+import aston.hw.responses.YandexWeatherResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,6 +10,7 @@ import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import java.io.IOException;
+import java.util.Properties;
 
 /**
  * The YandexWeatherService class provides functionality to request weather data using the Yandex Weather API.
@@ -16,17 +18,24 @@ import java.io.IOException;
 public class YandexWeatherService {
     private static final String URI_API = "https://api.weather.yandex.ru/v2/forecast";
 
+    private static final String LANG = "en_US";
+
     /**
      * Specify the API Key Test Tariff
      */
-    private static final String API_KEY = "KEY";
-    private static final String LANG = "en_US";
+    private final String API_KEY;
 
     /**
      * lat and lon latitude and longitude, default coordinates of Saint Petersburg
      */
     private Double lat = 59.93428;
     private Double lon = 30.3351;
+
+    public YandexWeatherService() {
+        PropertiesLoader propertiesLoader = PropertiesLoader.getInstance();
+        Properties properties = propertiesLoader.getProperties();
+        this.API_KEY = properties.getProperty("yandex.api.key");
+    }
 
     /**
      * Performs a request for weather data using the Yandex Weather API.

@@ -1,4 +1,4 @@
-package aston.hw.model;
+package aston.hw.responses;
 
 /**
  * The YandexWeatherResponse class represents weather data obtained from the Yandex Weather API.

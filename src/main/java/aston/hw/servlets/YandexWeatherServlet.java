@@ -1,12 +1,15 @@
 package aston.hw.servlets;
 
+import aston.hw.DAO.WeatherDAO;
 import aston.hw.Utils.Utils;
+import aston.hw.responses.YandexWeatherResponse;
 import aston.hw.services.YandexWeatherService;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 /**
  * The YandexWeatherServlet class is a servlet that handles requests for Yandex weather data.
@@ -16,6 +19,7 @@ import java.io.PrintWriter;
 @WebServlet("/weather/yandex")
 public class YandexWeatherServlet extends HttpServlet {
     private static final YandexWeatherService yandexWeatherService = new YandexWeatherService();
+    private static final WeatherDAO weatherDAO = new WeatherDAO();
 
     /**
      * Handles GET requests to retrieve weather data based on specified latitude and longitude coordinates.
@@ -35,7 +39,14 @@ public class YandexWeatherServlet extends HttpServlet {
             yandexWeatherService.setLon(Double.parseDouble(lon));
         }
         PrintWriter printWriter = resp.getWriter();
-        printWriter.write(yandexWeatherService.request().toString());
+        YandexWeatherResponse yandexWeatherResponse = yandexWeatherService.request();
+        printWriter.println(yandexWeatherResponse);
         printWriter.close();
+
+        try {
+            weatherDAO.addDataWeather(yandexWeatherResponse);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

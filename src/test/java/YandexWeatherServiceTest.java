@@ -1,4 +1,4 @@
-import aston.hw.model.YandexWeatherResponse;
+import aston.hw.responses.YandexWeatherResponse;
 import aston.hw.services.YandexWeatherService;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
